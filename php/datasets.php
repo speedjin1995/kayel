@@ -16,8 +16,9 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     $count = 0;
 
     if($duration == 1){
-        if($count % 2 == 0){
-            while($row = mysqli_fetch_assoc($empRecords)) {
+        while($row = mysqli_fetch_assoc($empRecords)) {
+            if($count % 2 == 0){
+
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
                     "address_1"=>$row['address_1'],
@@ -35,8 +36,8 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
         }
     }
     else if($duration == 5){
-        if($count % 10 == 0){
-            while($row = mysqli_fetch_assoc($empRecords)) {
+        while($row = mysqli_fetch_assoc($empRecords)) {
+            if($count % 10 == 0){
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
                     "address_1"=>$row['address_1'],
@@ -54,8 +55,9 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
         }
     }
     else if($duration == 10){
-        if($count % 20 == 0){
-            while($row = mysqli_fetch_assoc($empRecords)) {
+        while($row = mysqli_fetch_assoc($empRecords)) {
+            if($count % 20 == 0){
+
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
                     "address_1"=>$row['address_1'],
@@ -73,8 +75,8 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
         }
     }
     else if($duration == 30){
-        if($count % 60 == 0){
-            while($row = mysqli_fetch_assoc($empRecords)) {
+        while($row = mysqli_fetch_assoc($empRecords)) {
+            if($count % 60 == 0){
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
                     "address_1"=>$row['address_1'],
@@ -92,8 +94,9 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
         }
     }
     else if($duration == 60){
-        if($count % 120 == 0){
-            while($row = mysqli_fetch_assoc($empRecords)) {
+        while($row = mysqli_fetch_assoc($empRecords)) {
+            if($count % 120 == 0){
+
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
                     "address_1"=>$row['address_1'],
