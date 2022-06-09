@@ -3,15 +3,17 @@ require_once 'db_connect.php';
 
 if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     $startDate = filter_input(INPUT_POST, 'startDate', FILTER_SANITIZE_STRING);
-    $startDate = date_format($startDate,"Y-m-d H:i:s");
+    $fromDate = new DateTime($startDate);
+    $start = date_format($fromDate, "Y-m-d H:i:s");
 	$endDate = filter_input(INPUT_POST, 'endDate', FILTER_SANITIZE_STRING);
-    $endDate = date_format($endDate,"Y-m-d H:i:s");
+    $toDate = new DateTime($endDate);
+    $end= date_format($toDate,"Y-m-d 23:59:59");
     $duration = filter_input(INPUT_POST, 'duration', FILTER_SANITIZE_STRING);
 
-    $empQuery = "SELECT * from reading WHERE timestamp >= '".$startDate."' AND timestamp <= '".$endDate." ORDER BY timestamp";
+    $empQuery = "SELECT * from reading WHERE timestamp >= '".$start."' AND timestamp <= '".$end."' ORDER BY timestamp";
     $empRecords = mysqli_query($db, $empQuery);
     $data = array();
-    int $count = 0;
+    $count = 0;
 
     if($duration == 1){
         if($count % 2 == 0){
