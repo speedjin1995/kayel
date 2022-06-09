@@ -257,6 +257,10 @@ $(function () {
   });
 
   setDurations(1);
+
+  setInterval(function () {
+    setDurations(duration);
+  }, 60000);
 });
 
 function setDurations(id){
