@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard 3</title>
+  <title>Kayel Rubber | Hot Calendering</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- date-range-picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
 </head>
 <!--
 `body` tag options:
@@ -32,12 +38,6 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="index.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -45,9 +45,9 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+    <a href="index.html" class="brand-link">
+      <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Kayel Rubber</span>
     </a>
 
     <!-- Sidebar -->
@@ -57,23 +57,23 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="hotcalendering.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+            <a href="index.html" class="nav-link">
+              <i class="nav-icon fas fa-thermometer-full"></i>
               <p>Hot Calandering</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="coldroom.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-thermometer-half"></i>
               <p>Coldroom</p>
             </a>
           </li>
-          <li class="nav-item">
+          <!--li class="nav-item">
             <a href="sensors.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>Sensors</p>
             </a>
-          </li>
+          </li-->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -82,7 +82,77 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper" id="mainContents"></div>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Hot Calendering</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item active">Hot Calendering</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header border-0">
+                <div class="row">
+                  <div class="col-3">
+                    <!-- Date and time range -->
+                    <div class="form-group" >
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <input type="text" class="form-control float-right" id="reservation">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4"></div>
+                  <div class="col-1">
+                    <button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(1)">1 Min</button>
+                  </div>
+                  <div class="col-1">
+                    <button type="button" class="btn btn-block bg-gradient-warning btn-sm" onclick="setDurations(5)">5 Mins</button>
+                  </div>
+                  <div class="col-1">
+                    <button type="button" class="btn btn-block bg-gradient-info btn-sm" onclick="setDurations(10)">10 Mins</button>
+                  </div>
+                  <div class="col-1">
+                    <button type="button" class="btn btn-block bg-gradient-danger btn-sm" onclick="setDurations(30)">30 Mins</button>
+                  </div>
+                  <div class="col-1">
+                    <button type="button" class="btn btn-block bg-gradient-primary btn-sm" onclick="setDurations(60)">1 Hour</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="position-relative mb-4">
+                  <canvas id="visitors-chart" height="300"></canvas>
+                </div>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
   <!-- /.content-wrapper -->
 
   <!-- Control Sidebar -->
@@ -107,15 +177,132 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
-
 <!-- OPTIONAL SCRIPTS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard3.js"></script>
+<!-- InputMask -->
+<script src="plugins/moment/moment.min.js"></script>
+<!-- date-range-picker -->
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Toastr -->
+<script src="plugins/toastr/toastr.min.js"></script>
+
 <script>
-  
+var duration = 1;
+var myChart;
+
+$(function () {
+  toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+
+  //Date range as a button
+  $('#reservation').daterangepicker({
+    ranges   : {
+      'Today'       : [moment(), moment()],
+      'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+      'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+      'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+      'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+    startDate: moment(),
+    endDate  : moment()
+  });
+
+  myChart = new Chart("visitors-chart", {
+    type: "line",
+    options: {responsive: true},
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: 'Sensor 1',
+          data: [],
+          fill: false,
+          borderColor: '#007bff',
+          backgroundColor: '#007bff'
+        },
+        {
+          label: 'Sensor 2',
+          data: [],
+          fill: false,
+          borderColor: '#dc3545',
+          backgroundColor: '#dc3545'
+        },
+        {
+          label: 'Sensor 3',
+          data: [],
+          fill: false,
+          borderColor: '#6c757d',
+          backgroundColor: '#6c757d'
+        }
+      ]
+    }
+  });
+
+  setDurations(1);
+});
+
+function setDurations(id){
+  duration = id;
+
+  $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim(), duration: id}, function(data){
+    var obj = JSON.parse(data);
+
+    if(obj.status === 'success'){
+      toastr["success"]("Successfully get data", "Success:");
+      removeData(myChart);
+
+      for(var i=0; i<obj.message.length; i++){
+        addData(mychart, obj.message[i].timestamp, obj.message[i].address_1, obj.message[i].address_2, obj.message[i].address_3);
+      }
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Failed to get data", "Failed:");
+    }
+  });
+}
+
+function addData(chart, label, data1, data2, data3) {
+  chart.data.labels.push(label);
+  chart.data.datasets[0].data.push(data1);
+  chart.data.datasets[1].data.push(data2);
+  chart.data.datasets[2].data.push(data3);
+  chart.update();
+}
+
+function removeData(chart) {
+  var total = chart.data.labels.length;
+
+  while (total >= 0) {
+    chart.data.labels.pop();
+    chart.data.datasets[0].data.pop();
+    chart.data.datasets[1].data.pop();
+    chart.data.datasets[2].data.pop();
+    total--;
+  }
+
+  chart.update();
+}
 </script>
 </body>
 </html>
