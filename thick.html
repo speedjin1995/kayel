@@ -94,11 +94,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Hot Calendering</h1>
+            <h1 class="m-0">Thickness</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item active">Hot Calendering</li>
+              <li class="breadcrumb-item active">Thickness</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -238,21 +238,21 @@ $(function () {
       labels: [],
       datasets: [
         {
-          label: 'Hot Water In',
+          label: 'Sensor 1',
           data: [],
           fill: false,
           borderColor: '#007bff',
           backgroundColor: '#007bff'
         },
         {
-          label: 'Hot Water Out 1',
+          label: 'Sensor 2',
           data: [],
           fill: false,
           borderColor: '#dc3545',
           backgroundColor: '#dc3545'
         },
         {
-          label: 'Hot Water Out 2',
+          label: 'Sensor 3',
           data: [],
           fill: false,
           borderColor: '#6c757d',
@@ -280,7 +280,7 @@ function setDurations(id){
       removeData();
 
       for(var i=0; i<obj.message.length; i++){
-        addData(obj.message[i].timestamp, obj.message[i].hot_water_1, obj.message[i].hot_water_2, obj.message[i].hot_water_3);
+        addData(obj.message[i].timestamp, obj.message[i].sensor_1, obj.message[i].sensor_2, obj.message[i].sensor_3);
       }
     }
     else if(obj.status === 'failed'){
