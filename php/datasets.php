@@ -18,17 +18,22 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     if($duration == 1){
         while($row = mysqli_fetch_assoc($empRecords)) {
             if($count % 2 == 0){
-
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
-                    "address_1"=>$row['address_1'],
-                    "address_2"=>$row['address_2'],
-                    "address_3"=>$row['address_3'],
-                    "address_4"=>$row['address_4'],
-                    "address_5"=>$row['address_5'],
-                    "address_6"=>$row['address_6'],
+                    "aircond_1"=>$row['aircond_1'],
+                    "aircond_2"=>$row['aircond_2'],
+                    "chamber"=>$row['chamber'],
+                    "hot_water_1"=>$row['hot_water_1'],
+                    "hot_water_2"=>$row['hot_water_2'],
+                    "hot_water_3"=>$row['hot_water_3'],
                     "length"=>$row['length'],
-                    "sensor"=>$row['sensor']
+                    "rpm"=>$row['rpm'],
+                    "batch"=>$row['batch'],
+                    "length_saved"=>$row['length_saved'],
+                    "sensor_1"=>$row['sensor_1'],
+                    "sensor_2"=>$row['sensor_2'],
+                    "sensor_3"=>$row['sensor_3'],
+                    "layer"=>$row['layer']
                 );
             }
 
@@ -40,14 +45,20 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
             if($count % 10 == 0){
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
-                    "address_1"=>$row['address_1'],
-                    "address_2"=>$row['address_2'],
-                    "address_3"=>$row['address_3'],
-                    "address_4"=>$row['address_4'],
-                    "address_5"=>$row['address_5'],
-                    "address_6"=>$row['address_6'],
+                    "aircond_1"=>$row['aircond_1'],
+                    "aircond_2"=>$row['aircond_2'],
+                    "chamber"=>$row['chamber'],
+                    "hot_water_1"=>$row['hot_water_1'],
+                    "hot_water_2"=>$row['hot_water_2'],
+                    "hot_water_3"=>$row['hot_water_3'],
                     "length"=>$row['length'],
-                    "sensor"=>$row['sensor']
+                    "rpm"=>$row['rpm'],
+                    "batch"=>$row['batch'],
+                    "length_saved"=>$row['length_saved'],
+                    "sensor_1"=>$row['sensor_1'],
+                    "sensor_2"=>$row['sensor_2'],
+                    "sensor_3"=>$row['sensor_3'],
+                    "layer"=>$row['layer']
                 );
             }
 
@@ -57,17 +68,22 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     else if($duration == 10){
         while($row = mysqli_fetch_assoc($empRecords)) {
             if($count % 20 == 0){
-
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
-                    "address_1"=>$row['address_1'],
-                    "address_2"=>$row['address_2'],
-                    "address_3"=>$row['address_3'],
-                    "address_4"=>$row['address_4'],
-                    "address_5"=>$row['address_5'],
-                    "address_6"=>$row['address_6'],
+                    "aircond_1"=>$row['aircond_1'],
+                    "aircond_2"=>$row['aircond_2'],
+                    "chamber"=>$row['chamber'],
+                    "hot_water_1"=>$row['hot_water_1'],
+                    "hot_water_2"=>$row['hot_water_2'],
+                    "hot_water_3"=>$row['hot_water_3'],
                     "length"=>$row['length'],
-                    "sensor"=>$row['sensor']
+                    "rpm"=>$row['rpm'],
+                    "batch"=>$row['batch'],
+                    "length_saved"=>$row['length_saved'],
+                    "sensor_1"=>$row['sensor_1'],
+                    "sensor_2"=>$row['sensor_2'],
+                    "sensor_3"=>$row['sensor_3'],
+                    "layer"=>$row['layer']
                 );
             }
 
@@ -79,14 +95,20 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
             if($count % 60 == 0){
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
-                    "address_1"=>$row['address_1'],
-                    "address_2"=>$row['address_2'],
-                    "address_3"=>$row['address_3'],
-                    "address_4"=>$row['address_4'],
-                    "address_5"=>$row['address_5'],
-                    "address_6"=>$row['address_6'],
+                    "aircond_1"=>$row['aircond_1'],
+                    "aircond_2"=>$row['aircond_2'],
+                    "chamber"=>$row['chamber'],
+                    "hot_water_1"=>$row['hot_water_1'],
+                    "hot_water_2"=>$row['hot_water_2'],
+                    "hot_water_3"=>$row['hot_water_3'],
                     "length"=>$row['length'],
-                    "sensor"=>$row['sensor']
+                    "rpm"=>$row['rpm'],
+                    "batch"=>$row['batch'],
+                    "length_saved"=>$row['length_saved'],
+                    "sensor_1"=>$row['sensor_1'],
+                    "sensor_2"=>$row['sensor_2'],
+                    "sensor_3"=>$row['sensor_3'],
+                    "layer"=>$row['layer']
                 );
             }
 
@@ -96,17 +118,22 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     else if($duration == 60){
         while($row = mysqli_fetch_assoc($empRecords)) {
             if($count % 120 == 0){
-
                 $data[] = array( 
                     "timestamp"=>$row['timestamp'],
-                    "address_1"=>$row['address_1'],
-                    "address_2"=>$row['address_2'],
-                    "address_3"=>$row['address_3'],
-                    "address_4"=>$row['address_4'],
-                    "address_5"=>$row['address_5'],
-                    "address_6"=>$row['address_6'],
+                    "aircond_1"=>$row['aircond_1'],
+                    "aircond_2"=>$row['aircond_2'],
+                    "chamber"=>$row['chamber'],
+                    "hot_water_1"=>$row['hot_water_1'],
+                    "hot_water_2"=>$row['hot_water_2'],
+                    "hot_water_3"=>$row['hot_water_3'],
                     "length"=>$row['length'],
-                    "sensor"=>$row['sensor']
+                    "rpm"=>$row['rpm'],
+                    "batch"=>$row['batch'],
+                    "length_saved"=>$row['length_saved'],
+                    "sensor_1"=>$row['sensor_1'],
+                    "sensor_2"=>$row['sensor_2'],
+                    "sensor_3"=>$row['sensor_3'],
+                    "layer"=>$row['layer']
                 );
             }
 

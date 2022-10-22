@@ -68,12 +68,18 @@
               <p>Cold Chamber</p>
             </a>
           </li>
-          <!--li class="nav-item">
-            <a href="sensors.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Sensors</p>
+          <li class="nav-item">
+            <a href="length.html" class="nav-link">
+              <i class="nav-icon fas fa-ruler"></i>
+              <p>Length</p>
             </a>
-          </li-->
+          </li>
+          <li class="nav-item">
+            <a href="thick.html" class="nav-link">
+              <i class="nav-icon fas fa-bold"></i>
+              <p>Thickness</p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -232,21 +238,21 @@ $(function () {
       labels: [],
       datasets: [
         {
-          label: 'Sensor 1',
+          label: 'Aircond 1',
           data: [],
           fill: false,
           borderColor: '#007bff',
           backgroundColor: '#007bff'
         },
         {
-          label: 'Sensor 2',
+          label: 'Aircond 2',
           data: [],
           fill: false,
           borderColor: '#dc3545',
           backgroundColor: '#dc3545'
         },
         {
-          label: 'Sensor 3',
+          label: 'Cold Chamber',
           data: [],
           fill: false,
           borderColor: '#6c757d',
@@ -274,7 +280,7 @@ function setDurations(id){
       removeData();
 
       for(var i=0; i<obj.message.length; i++){
-        addData(obj.message[i].timestamp, obj.message[i].address_4, obj.message[i].address_5, obj.message[i].address_6);
+        addData(obj.message[i].timestamp, obj.message[i].aircond_1, obj.message[i].aircond_2, obj.message[i].aircond_3);
       }
     }
     else if(obj.status === 'failed'){
