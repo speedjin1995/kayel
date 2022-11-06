@@ -116,14 +116,14 @@
                 <div class="row">
                   <div class="col-3">
                     <!-- Date and time range -->
-                    <div class="form-group" >
+                    <!--div class="form-group" >
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <input type="text" class="form-control float-right" id="reservation">
                       </div>
-                    </div>
+                    </div-->
                   </div>
                   <div class="col-4"></div>
                   <div class="col-1">
@@ -237,26 +237,23 @@ $(function () {
     data: {
       labels: [],
       datasets: [
-        {
-          label: 'Hot Water In',
-          data: [],
+        /*{
+          type: 'bar',
+          label: 'Length',
           fill: false,
           borderColor: '#007bff',
-          backgroundColor: '#007bff'
+          backgroundColor: '#007bff',
+          data: []
+        }, */
+        {
+          type: 'line',
+          label: 'Total Length Produced',
+          data: [],
         },
         {
-          label: 'Hot Water Out 1',
+          type: 'line',
+          label: 'Saved Length',
           data: [],
-          fill: false,
-          borderColor: '#dc3545',
-          backgroundColor: '#dc3545'
-        },
-        {
-          label: 'Hot Water Out 2',
-          data: [],
-          fill: false,
-          borderColor: '#6c757d',
-          backgroundColor: '#6c757d'
         }
       ]
     }
@@ -272,7 +269,7 @@ $(function () {
 function setDurations(id){
   duration = id;
 
-  $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim(), duration: id}, function(data){
+  $.post('php/datasets.php', {startDate: formatDate(new Date()), endDate: formatDate(new Date()), duration: id}, function(data){
     var obj = JSON.parse(data);
 
     if(obj.status === 'success'){
@@ -312,6 +309,21 @@ function removeData() {
   }
 
   myChart.update();
+}
+
+function formatDate(d) {
+  //var d = new Date(date),
+  month = '' + (d.getMonth() + 1),
+  day = '' + d.getDate(),
+  year = d.getFullYear();
+
+  if (month.length < 2) 
+    month = '0' + month;
+
+  if (day.length < 2) 
+    day = '0' + day;
+
+  return [year, month, day].join('-');
 }
 </script>
 </body>
