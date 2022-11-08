@@ -116,14 +116,14 @@
                 <div class="row">
                   <div class="col-3">
                     <!-- Date and time range -->
-                    <!--div class="form-group" >
+                    <div class="form-group" style="display: none;">
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <input type="text" class="form-control float-right" id="reservation">
                       </div>
-                    </div-->
+                    </div>
                   </div>
                   <div class="col-4"></div>
                   <div class="col-1">
@@ -269,7 +269,7 @@ $(function () {
 function setDurations(id){
   duration = id;
 
-  $.post('php/datasets.php', {startDate: formatDate(new Date()), endDate: formatDate(new Date()), duration: id}, function(data){
+  $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim(), duration: id}, function(data){
     var obj = JSON.parse(data);
 
     if(obj.status === 'success'){
@@ -277,7 +277,7 @@ function setDurations(id){
       removeData();
 
       for(var i=0; i<obj.message.length; i++){
-        addData(obj.message[i].timestamp, obj.message[i].hot_water_1, obj.message[i].hot_water_2, obj.message[i].hot_water_3);
+        addData(obj.message[i].timestamp, obj.message[i].length, obj.message[i].length_saved);
       }
     }
     else if(obj.status === 'failed'){
@@ -289,11 +289,10 @@ function setDurations(id){
   });
 }
 
-function addData(label, data1, data2, data3) {
+function addData(label, data1, data2) {
   myChart.data.labels.push(label);
   myChart.data.datasets[0].data.push(data1);
   myChart.data.datasets[1].data.push(data2);
-  myChart.data.datasets[2].data.push(data3);
   myChart.update();
 }
 
@@ -304,26 +303,10 @@ function removeData() {
     myChart.data.labels.pop();
     myChart.data.datasets[0].data.pop();
     myChart.data.datasets[1].data.pop();
-    myChart.data.datasets[2].data.pop();
     total--;
   }
 
   myChart.update();
-}
-
-function formatDate(d) {
-  //var d = new Date(date),
-  month = '' + (d.getMonth() + 1),
-  day = '' + d.getDate(),
-  year = d.getFullYear();
-
-  if (month.length < 2) 
-    month = '0' + month;
-
-  if (day.length < 2) 
-    day = '0' + day;
-
-  return [year, month, day].join('-');
 }
 </script>
 </body>
