@@ -154,6 +154,40 @@
         </div>
     </div>
 </div>
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+  <!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
+
+<!-- Main Footer -->
+<footer class="main-footer">
+  <strong>Copyright &copy; 2022 Kayel Rubber.</strong> All rights reserved.
+  <div class="float-right d-none d-sm-inline-block"><b>Version</b> 1.0.0</div>
+</footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/jquery-validation/jquery.validate.min.js"></script>
+<!-- Bootstrap -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE -->
+<script src="dist/js/adminlte.js"></script>
+<!-- OPTIONAL SCRIPTS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/moment/moment.min.js"></script>
+<!-- date-range-picker -->
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Toastr -->
+<script src="plugins/toastr/toastr.min.js"></script>
+
 
 <script>
 $(function () {
@@ -221,14 +255,29 @@ $(function () {
     });
 
     $('#exportProfile').on('click', function(){
-        var fromDateValue = $('#fromDate').val() ? $('#fromDate').val() : '';
-        var toDateValue = $('#toDate').val() ? $('#toDate').val() : '';
+        var fromDateValue = $('#fromDate').val() ? formatDate($('#fromDate').val()) : '';
+        var toDateValue = $('#toDate').val() ? formatDate($('#toDate').val()) : '';
         var itemTypeFilter = $('#batchFilter').val() ? $('#batchFilter').val() : '';
         
         window.open("php/export.php?fromDate="+fromDateValue+"&toDate="+toDateValue+
         "&batchNo="+itemTypeFilter);
 
     });
-
 });
+
+function formatDate(date) {
+
+  var d = date.split("/"),
+  month = d[1],
+  day = d[2],
+  year = d[0];
+
+  /*if (month.length < 2) 
+    month = '0' + month;
+
+  if (day.length < 2) 
+    day = '0' + day;*/
+
+  return [year, month, day].join('-');
+}
 </script>

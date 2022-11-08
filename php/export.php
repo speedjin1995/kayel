@@ -15,18 +15,34 @@ $fileName = "Summary_report" . date('Y-m-d') . ".xls";
 $output = '';
 //$itemType = $_GET['itemType'];
 ## Search 
-$searchQuery = " ";
+$searchQuery = "";
 
 if($_GET['fromDate'] != null && $_GET['fromDate'] != ''){
-    $searchQuery = " and timestamp >= '".$_GET['fromDate']."'";
+    $start = date("Y-m-d 00:00:00", strtotime((string)$_GET['fromDate']));
+    $searchQuery .= "timestamp >= '".$start."'";
 }
 
 if($_GET['toDate'] != null && $_GET['toDate'] != ''){
-    $searchQuery = " and timestamp <= '".$_GET['toDate']."'";
+    $end = date("Y-m-d 23:59:59", strtotime((string)$_GET['toDate']));;
+    
+    if($_GET['fromDate'] != null && $_GET['fromDate'] != ''){
+        $searchQuery .= " AND timestamp <= '".$end."'";
+    }
+    else{
+        $searchQuery .= "timestamp <= '".$end."'";
+    }
 }
 
 if($_GET['batchNo'] != null && $_GET['batchNo'] != '' && $_GET['batchNo'] != '-'){
-    $searchQuery = " and batch = '".$_GET['batchNo']."'";
+    if($_GET['fromDate'] != null && $_GET['fromDate'] != ''){
+        $searchQuery .= " AND batch = '".$_GET['batchNo']."'";
+    }
+    else if($_GET['toDate'] != null && $_GET['toDate'] != ''){
+        $searchQuery .= " AND batch = '".$_GET['batchNo']."'";
+    }
+    else{
+        $searchQuery .= "batch = '".$_GET['batchNo']."'";
+    }
 }
  
 // Column names 
@@ -35,15 +51,15 @@ $fields = array('TIMESTAMP', 'AIRCOND 1', 'AIRCOND 2', 'COLD CHAMBER', 'HOT WATE
 
 // Display column names as first row 
 $excelData = implode("\t", array_values($fields)) . "\n";
-
 // Fetch records from database
-$query = $db->query("SELECT * FROM reading WHERE ".$searchQuery."");
+$query = $db->query("SELECT * FROM reading WHERE ".$searchQuery);
 
 
 if($query->num_rows > 0){ 
     // Output each row of the data 
     while($row = $query->fetch_assoc()){ 
-        $lineData = array($row['timestamp'], $row['aircond_1'], $row['aircond_2'], $row['chamber'], $row['hot_water_1'], $row['hot_water_2'],
+        $parsedDate = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
+        $lineData = array($parsedDate, $row['aircond_1'], $row['aircond_2'], $row['chamber'], $row['hot_water_1'], $row['hot_water_2'],
         $row['hot_water_3'], $row['length'], $row['rpm'], $row['batch'], $row['length_saved'], $row['sensor_1'], $row['sensor_2'], $row['sensor_3'], $row['layer']);       
 
         array_walk($lineData, 'filterData'); 
