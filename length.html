@@ -69,15 +69,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="length.html" class="nav-link active">
-              <i class="nav-icon fas fa-ruler"></i>
-              <p>Length</p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="thick.html" class="nav-link">
               <i class="nav-icon fas fa-bold"></i>
               <p>Thickness</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="length.html" class="nav-link active">
+              <i class="nav-icon fas fa-ruler"></i>
+              <p>Length</p>
             </a>
           </li>
           <li class="nav-item">
@@ -115,14 +115,14 @@
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-        <div class="row">
+        <div class="row" style="display: none;">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header border-0">
                 <div class="row">
                   <div class="col-3">
                     <!-- Date and time range -->
-                    <div class="form-group" style="display: none;">
+                    <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
@@ -133,7 +133,7 @@
                   </div>
                   <div class="col-4"></div>
                   <div class="col-5">
-                    <!--button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(1)">1 Min</button-->
+                    <button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(1)">1 Min</button>
                   </div>
                   <!--div class="col-1">
                     <button type="button" class="btn btn-block bg-gradient-warning btn-sm" onclick="setDurations(5)">5 Mins</button>
@@ -262,7 +262,7 @@ $(function () {
       'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     },
     startDate: moment(),
-    endDate  : moment()
+    endDate  : moment(),
   });
 
   /*myChart = new Chart("visitors-chart", {
@@ -291,7 +291,7 @@ $(function () {
     }
   });*/
 
-  $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim()}, function(data){
+  $.post('php/lengthDatasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim()}, function(data){
     var obj = JSON.parse(data);
 
     if(obj.status === 'success'){
@@ -305,11 +305,9 @@ $(function () {
       var totalPcs = 0;
       var previousLength = 0;
 
-      $('#lengthReading').append('<tr><td>'+obj.message[i].timestamp+'</td><td>'+obj.message[i].length+'</td></tr>');
-
       for(var i=0; i<obj.message.length; i++){
         if(parseFloat(obj.message[i].length) < previousLength){
-          $('#lengthReading').append('<tr><td>'+obj.message[i].timestamp+'</td><td>'+obj.message[i-1].length+'</td></tr>');
+          $('#lengthReading').append('<tr><td>'+obj.message[i-1].timestamp+'</td><td>'+obj.message[i-1].length+'</td></tr>');
           previousLength = parseFloat(obj.message[i].length);
           totalLength += parseFloat(obj.message[i-1].length);
           currentLength = parseFloat(obj.message[i].length);
@@ -334,16 +332,36 @@ $(function () {
   });
   
   setInterval(function () {
-    $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim()}, function(data){
+    $.post('php/lengthDatasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim()}, function(data){
       var obj = JSON.parse(data);
 
       if(obj.status === 'success'){
         toastr["success"]("Successfully get data", "Success:");
-        removeData();
-        
+        $('#batchNo').html('Batch No: '+ obj.message[0].batch);
+        $('#layers').html('Layer: '+ obj.message[0].layer);
+        $('#savedLength').html('Saved Length: ' + obj.message[0].length_saved);
+        $('#lengthReading').html('');
+        var totalLength = 0;
+        var currentLength = 0;
+        var totalPcs = 0;
+        var previousLength = 0;
 
         for(var i=0; i<obj.message.length; i++){
-          addData(obj.message[i].timestamp, obj.message[i].length, obj.message[i].length_saved);
+          if(parseFloat(obj.message[i].length) < previousLength){
+            $('#lengthReading').append('<tr><td>'+obj.message[i].timestamp+'</td><td>'+obj.message[i-1].length+'</td></tr>');
+            previousLength = parseFloat(obj.message[i].length);
+            totalLength += parseFloat(obj.message[i-1].length);
+            currentLength = parseFloat(obj.message[i].length);
+            totalPcs++;
+          }
+          else if(obj.message[i].length != previousLength){
+            previousLength = parseFloat(obj.message[i].length);
+            currentLength += parseFloat(obj.message[i].length);
+          }
+
+          $('#totalLength').html('Total Length: '+ totalLength);
+          $('#currentLength').html('Current Length: ' + currentLength);
+          $('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
         }
       }
       else if(obj.status === 'failed'){
