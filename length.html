@@ -132,10 +132,10 @@
                     </div>
                   </div>
                   <div class="col-4"></div>
-                  <div class="col-1">
-                    <button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(1)">1 Min</button>
+                  <div class="col-5">
+                    <!--button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(1)">1 Min</button-->
                   </div>
-                  <div class="col-1">
+                  <!--div class="col-1">
                     <button type="button" class="btn btn-block bg-gradient-warning btn-sm" onclick="setDurations(5)">5 Mins</button>
                   </div>
                   <div class="col-1">
@@ -146,13 +146,41 @@
                   </div>
                   <div class="col-1">
                     <button type="button" class="btn btn-block bg-gradient-primary btn-sm" onclick="setDurations(60)">1 Hour</button>
+                  </div-->
+                </div>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <p id="batchNo">Batch No: -</p>
+                  </div>
+                  <div class="col-lg-6">
+                    <p id="layers">Layer: -</p>
                   </div>
                 </div>
               </div>
               <div class="card-body">
-                <div class="position-relative mb-4">
-                  <canvas id="visitors-chart" height="100vh"></canvas>
-                </div>
+                <p id="savedLength">Saved Length: -</p>
+                <p id="totalLength">Total Length: -</p>
+                <p id="currentLength">Current Length: -</p>
+                <p id="totalPcs">Total Pcs: 0 Pieces</p>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th style="width: 50%">TimeStamp</th>
+                      <th style="width: 50%">Length</th>
+                    </tr>
+                  </thead>
+                  <tbody id="lengthReading"></tbody>
+                </table>
               </div>
             </div>
             <!-- /.card -->
@@ -237,53 +265,64 @@ $(function () {
     endDate  : moment()
   });
 
-  myChart = new Chart("visitors-chart", {
+  /*myChart = new Chart("visitors-chart", {
     type: "line",
     options: {responsive: true},
     data: {
       labels: [],
       datasets: [
-        /*{
-          type: 'bar',
-          label: 'Length',
-          fill: false,
-          borderColor: '#007bff',
-          backgroundColor: '#007bff',
-          data: []
-        }, */
         {
           type: 'line',
           label: 'Total Length Produced',
           data: [],
+          fill: false,
+          borderColor: '#007bff',
+          backgroundColor: '#007bff'
         },
         {
           type: 'line',
           label: 'Saved Length',
           data: [],
+          fill: false,
+          borderColor: '#dc3545',
+          backgroundColor: '#dc3545'
         }
       ]
     }
-  });
+  });*/
 
-  setDurations(1);
-  
-  setInterval(function () {
-    setDurations(duration);
-  }, 60000);
-});
-
-function setDurations(id){
-  duration = id;
-
-  $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim(), duration: id}, function(data){
+  $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim()}, function(data){
     var obj = JSON.parse(data);
 
     if(obj.status === 'success'){
       toastr["success"]("Successfully get data", "Success:");
-      removeData();
+      $('#batchNo').html('Batch No: '+ obj.message[0].batch);
+      $('#layers').html('Layer: '+ obj.message[0].layer);
+      $('#savedLength').html('Saved Length: ' + obj.message[0].length_saved);
+      $('#lengthReading').html('');
+      var totalLength = 0;
+      var currentLength = 0;
+      var totalPcs = 0;
+      var previousLength = 0;
+
+      $('#lengthReading').append('<tr><td>'+obj.message[i].timestamp+'</td><td>'+obj.message[i].length+'</td></tr>');
 
       for(var i=0; i<obj.message.length; i++){
-        addData(obj.message[i].timestamp, obj.message[i].length, obj.message[i].length_saved);
+        if(parseFloat(obj.message[i].length) < previousLength){
+          $('#lengthReading').append('<tr><td>'+obj.message[i].timestamp+'</td><td>'+obj.message[i-1].length+'</td></tr>');
+          previousLength = parseFloat(obj.message[i].length);
+          totalLength += parseFloat(obj.message[i-1].length);
+          currentLength = parseFloat(obj.message[i].length);
+          totalPcs++;
+        }
+        else if(obj.message[i].length != previousLength){
+          previousLength = parseFloat(obj.message[i].length);
+          currentLength += parseFloat(obj.message[i].length);
+        }
+
+        $('#totalLength').html('Total Length: '+ totalLength);
+        $('#currentLength').html('Current Length: ' + currentLength);
+        $('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
       }
     }
     else if(obj.status === 'failed'){
@@ -293,7 +332,29 @@ function setDurations(id){
       toastr["error"]("Failed to get data", "Failed:");
     }
   });
-}
+  
+  setInterval(function () {
+    $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim()}, function(data){
+      var obj = JSON.parse(data);
+
+      if(obj.status === 'success'){
+        toastr["success"]("Successfully get data", "Success:");
+        removeData();
+        
+
+        for(var i=0; i<obj.message.length; i++){
+          addData(obj.message[i].timestamp, obj.message[i].length, obj.message[i].length_saved);
+        }
+      }
+      else if(obj.status === 'failed'){
+        toastr["error"](obj.message, "Failed:");
+      }
+      else{
+        toastr["error"]("Failed to get data", "Failed:");
+      }
+    });
+  }, 60000);
+});
 
 function addData(label, data1, data2) {
   myChart.data.labels.push(label);

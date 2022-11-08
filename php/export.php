@@ -46,8 +46,8 @@ if($_GET['batchNo'] != null && $_GET['batchNo'] != '' && $_GET['batchNo'] != '-'
 }
  
 // Column names 
-$fields = array('TIMESTAMP', 'AIRCOND 1', 'AIRCOND 2', 'COLD CHAMBER', 'HOT WATER 1', 'HOT WATER 2', 'HOT WATER 3', 'LENGTH', 'RPM', 
-                'BATCH', 'SAVED LENGTH','THICKNESS 1', 'THICKNESS 2', 'THICKNESS 3', 'LAYER'); 
+$fields = array('TIMESTAMP', 'AIRCOND 1', 'AIRCOND 2', 'COLD CHAMBER', 'HOT WATER 1', 'HOT WATER 2', 'HOT WATER 3', 'LENGTH', 'SAVED LENGTH', 'RPM', 
+                'BATCH', 'LAYER', 'THICKNESS 1', 'THICKNESS 2', 'THICKNESS 3'); 
 
 // Display column names as first row 
 $excelData = implode("\t", array_values($fields)) . "\n";
@@ -60,7 +60,7 @@ if($query->num_rows > 0){
     while($row = $query->fetch_assoc()){ 
         $parsedDate = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
         $lineData = array($parsedDate, $row['aircond_1'], $row['aircond_2'], $row['chamber'], $row['hot_water_1'], $row['hot_water_2'],
-        $row['hot_water_3'], $row['length'], $row['rpm'], $row['batch'], $row['length_saved'], $row['sensor_1'], $row['sensor_2'], $row['sensor_3'], $row['layer']);       
+        $row['hot_water_3'], $row['length'], $row['length_saved'], $row['rpm'], $row['batch'], $row['layer'], $row['sensor_1'], $row['sensor_2'], $row['sensor_3']);       
 
         array_walk($lineData, 'filterData'); 
         $excelData .= implode("\t", array_values($lineData)) . "\n"; 

@@ -131,7 +131,12 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <p id="batchNo">
+                      Current Batch: - <br>
+                      Layer: -
+                    </p>
+                  </div>
                   <div class="col-1">
                     <button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(1)">1 Min</button>
                   </div>
@@ -284,6 +289,7 @@ function setDurations(id){
     if(obj.status === 'success'){
       toastr["success"]("Successfully get data", "Success:");
       removeData();
+      $('#batchNo').html('Current Batch: '+ obj.message[0].batch +' <br>Layer: ' + obj.message[0].layer);
 
       for(var i=0; i<obj.message.length; i++){
         addData(obj.message[i].timestamp, obj.message[i].sensor_1, obj.message[i].sensor_2, obj.message[i].sensor_3);
