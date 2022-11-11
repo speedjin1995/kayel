@@ -330,6 +330,50 @@ $(function () {
       toastr["error"]("Failed to get data", "Failed:");
     }
   });
+
+  setInterval(function () {
+    $.post('http://127.0.0.1:5002/handshaking', function(data){
+      if(data != null && data != "Error"){
+        var decoded = JSON.parse(data);
+
+        if(decoded.length > 0){
+          $.post('php/updateData.php', 
+            {
+              aircond_1: decoded[0], 
+              aircond_2: decoded[1], 
+              chamber: decoded[2],
+              hot_water_1: decoded[3], 
+              hot_water_2: decoded[4], 
+              hot_water_3: decoded[5],
+              length: decoded[6], 
+              rpm: decoded[7], 
+              batch: decoded[8],
+              length_saved: decoded[9], 
+              sensor_1: decoded[10], 
+              sensor_2: decoded[11],
+              sensor_3: decoded[12], 
+              layer: decoded[13], 
+              width_1: decoded[14], 
+              width_2: decoded[15]
+            }, 
+            function(data){
+              var obj = JSON.parse(data);
+
+              if(obj.status === 'success'){
+                
+              }
+              else if(obj.status === 'failed'){
+                toastr["error"](obj.message, "Failed:");
+              }
+              else{
+                toastr["error"]("Failed to get data", "Failed:");
+              }
+            }
+          );
+        }
+      }
+    });
+  }, 30000);
   
   setInterval(function () {
     $.post('php/lengthDatasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim()}, function(data){
