@@ -22,7 +22,7 @@ $_POST['layer'], $_POST['width_1'], $_POST['width_2'])){
     $width_2 = filter_input(INPUT_POST, 'width_2', FILTER_SANITIZE_STRING);
 
     if ($insert_stmt = $db->prepare("INSERT INTO reading (aircond_1, aircond_2, chamber, hot_water_1, hot_water_2, hot_water_3, length, rpm, batch, length_saved, sensor_1, sensor_2, sensor_3, layer, width_1, width_2) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ? ,?, ?, ?)")) {
-        $insert_stmt->bind_param('ssssssssssssssss', $aircond_1, $aircond_2, $chamber, $hot_water_1, $hot_water_2, $hot_water_3, $length);
+        $insert_stmt->bind_param('ssssssssssssssss', $aircond_1, $aircond_2, $chamber, $hot_water_1, $hot_water_2, $hot_water_3, $length, $rpm, $batch, $length_saved, $sensor_1, $sensor_2, $sensor_3, $layer, $width_1, $width_2);
         
         // Execute the prepared query.
         if (! $insert_stmt->execute()) {

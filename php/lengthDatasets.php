@@ -32,7 +32,9 @@ if(isset($_POST['startDate'], $_POST['endDate'])){
             "sensor_1"=>$row['sensor_1'],
             "sensor_2"=>$row['sensor_2'],
             "sensor_3"=>$row['sensor_3'],
-            "layer"=>$row['layer']
+            "layer"=>$row['layer'],
+            "width_1"=>$row['width_1'],
+            "width_2"=>$row['width_2']
         );
     }
 

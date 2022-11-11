@@ -332,12 +332,16 @@ function setDurations(id){
 
     if(obj.status === 'success'){
       toastr["success"]("Successfully get data", "Success:");
-      removeData();
-      $('#batchNo').html('Current Batch: '+ obj.message[0].batch +' <br>Layer: ' + obj.message[0].layer);
 
-      for(var i=0; i<obj.message.length; i++){
-        addData(obj.message[i].timestamp, obj.message[i].aircond_1, obj.message[i].aircond_2, obj.message[i].aircond_3);
+      if(obj.message.length > 0){
+        removeData();
+        $('#batchNo').html('Current Batch: '+ obj.message[0].width_1 +' <br>Layer: ' + obj.message[0].layer);
+
+        for(var i=0; i<obj.message.length; i++){
+          addData(obj.message[i].timestamp, obj.message[i].aircond_1, obj.message[i].aircond_2, obj.message[i].aircond_3);
+        }
       }
+      
     }
     else if(obj.status === 'failed'){
       toastr["error"](obj.message, "Failed:");

@@ -296,31 +296,34 @@ $(function () {
 
     if(obj.status === 'success'){
       toastr["success"]("Successfully get data", "Success:");
-      $('#batchNo').html('Batch No: '+ obj.message[0].batch);
-      $('#layers').html('Layer: '+ obj.message[0].layer);
-      $('#savedLength').html('Saved Length: ' + obj.message[0].length_saved);
-      $('#lengthReading').html('');
-      var totalLength = 0;
-      var currentLength = 0;
-      var totalPcs = 0;
-      var previousLength = 0;
 
-      for(var i=0; i<obj.message.length; i++){
-        if(parseFloat(obj.message[i].length) < previousLength){
-          $('#lengthReading').append('<tr><td>'+obj.message[i-1].timestamp+'</td><td>'+obj.message[i-1].length+'</td></tr>');
-          previousLength = parseFloat(obj.message[i].length);
-          totalLength += parseFloat(obj.message[i-1].length);
-          currentLength = parseFloat(obj.message[i].length);
-          totalPcs++;
-        }
-        else if(obj.message[i].length != previousLength){
-          previousLength = parseFloat(obj.message[i].length);
-          currentLength += parseFloat(obj.message[i].length);
-        }
+      if(obj.message.length > 0){
+        $('#batchNo').html('Batch No: '+ obj.message[0].width_1);
+        $('#layers').html('Layer: '+ obj.message[0].layer);
+        $('#savedLength').html('Saved Length: ' + obj.message[0].length_saved);
+        $('#lengthReading').html('');
+        var totalLength = 0;
+        var currentLength = 0;
+        var totalPcs = 0;
+        var previousLength = 0;
 
-        $('#totalLength').html('Total Length: '+ totalLength);
-        $('#currentLength').html('Current Length: ' + currentLength);
-        $('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
+        for(var i=0; i<obj.message.length; i++){
+          if(parseFloat(obj.message[i].length) < previousLength){
+            $('#lengthReading').append('<tr><td>'+obj.message[i-1].timestamp+'</td><td>'+obj.message[i].batch+'</td></tr>');
+            previousLength = parseFloat(obj.message[i].length);
+            totalLength += parseFloat(obj.message[i-1].length);
+            currentLength = parseFloat(obj.message[i].length);
+            totalPcs++;
+          }
+          else if(obj.message[i].length != previousLength){
+            previousLength = parseFloat(obj.message[i].length);
+            currentLength += parseFloat(obj.message[i].length);
+          }
+
+          $('#totalLength').html('Total Length: '+ totalLength);
+          $('#currentLength').html('Current Length: ' + currentLength);
+          $('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
+        }
       }
     }
     else if(obj.status === 'failed'){
@@ -381,32 +384,36 @@ $(function () {
 
       if(obj.status === 'success'){
         toastr["success"]("Successfully get data", "Success:");
-        $('#batchNo').html('Batch No: '+ obj.message[0].batch);
-        $('#layers').html('Layer: '+ obj.message[0].layer);
-        $('#savedLength').html('Saved Length: ' + obj.message[0].length_saved);
-        $('#lengthReading').html('');
-        var totalLength = 0;
-        var currentLength = 0;
-        var totalPcs = 0;
-        var previousLength = 0;
 
-        for(var i=0; i<obj.message.length; i++){
-          if(parseFloat(obj.message[i].length) < previousLength){
-            $('#lengthReading').append('<tr><td>'+obj.message[i].timestamp+'</td><td>'+obj.message[i-1].length+'</td></tr>');
-            previousLength = parseFloat(obj.message[i].length);
-            totalLength += parseFloat(obj.message[i-1].length);
-            currentLength = parseFloat(obj.message[i].length);
-            totalPcs++;
-          }
-          else if(obj.message[i].length != previousLength){
-            previousLength = parseFloat(obj.message[i].length);
-            currentLength += parseFloat(obj.message[i].length);
-          }
+        if(obj.message.length > 0){
+          $('#batchNo').html('Batch No: '+ obj.message[0].width_1);
+          $('#layers').html('Layer: '+ obj.message[0].layer);
+          $('#savedLength').html('Saved Length: ' + obj.message[0].length_saved);
+          $('#lengthReading').html('');
+          var totalLength = 0;
+          var currentLength = 0;
+          var totalPcs = 0;
+          var previousLength = 0;
 
-          $('#totalLength').html('Total Length: '+ totalLength);
-          $('#currentLength').html('Current Length: ' + currentLength);
-          $('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
+          for(var i=0; i<obj.message.length; i++){
+            if(parseFloat(obj.message[i].length) < previousLength){
+              $('#lengthReading').append('<tr><td>'+obj.message[i].timestamp+'</td><td>'+obj.message[i].batch+'</td></tr>');
+              previousLength = parseFloat(obj.message[i].length);
+              totalLength += parseFloat(obj.message[i-1].length);
+              currentLength = parseFloat(obj.message[i].length);
+              totalPcs++;
+            }
+            else if(obj.message[i].length != previousLength){
+              previousLength = parseFloat(obj.message[i].length);
+              currentLength += parseFloat(obj.message[i].length);
+            }
+
+            $('#totalLength').html('Total Length: '+ totalLength);
+            $('#currentLength').html('Current Length: ' + currentLength);
+            $('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
+          }
         }
+        
       }
       else if(obj.status === 'failed'){
         toastr["error"](obj.message, "Failed:");
