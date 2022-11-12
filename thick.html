@@ -138,19 +138,19 @@
                     </p>
                   </div>
                   <div class="col-1">
-                    <button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(1)">1 Min</button>
+                    <button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(5)">5 Min</button>
                   </div>
                   <div class="col-1">
-                    <button type="button" class="btn btn-block bg-gradient-warning btn-sm" onclick="setDurations(5)">5 Mins</button>
+                    <button type="button" class="btn btn-block bg-gradient-warning btn-sm" onclick="setDurations(30)">30 Mins</button>
                   </div>
                   <div class="col-1">
-                    <button type="button" class="btn btn-block bg-gradient-info btn-sm" onclick="setDurations(10)">10 Mins</button>
+                    <button type="button" class="btn btn-block bg-gradient-info btn-sm" onclick="setDurations(60)">1 Hour</button>
                   </div>
                   <div class="col-1">
-                    <button type="button" class="btn btn-block bg-gradient-danger btn-sm" onclick="setDurations(30)">30 Mins</button>
+                    <button type="button" class="btn btn-block bg-gradient-danger btn-sm" onclick="setDurations(240)">4 Hours</button>
                   </div>
                   <div class="col-1">
-                    <button type="button" class="btn btn-block bg-gradient-primary btn-sm" onclick="setDurations(60)">1 Hour</button>
+                    <button type="button" class="btn btn-block bg-gradient-primary btn-sm" onclick="setDurations(1440)">1 Day</button>
                   </div>
                 </div>
               </div>
@@ -206,7 +206,7 @@
 <script src="plugins/toastr/toastr.min.js"></script>
 
 <script>
-var duration = 1;
+var duration = 5;
 var myChart;
 
 $(function () {
@@ -238,7 +238,7 @@ $(function () {
       'This Month'  : [moment().startOf('month'), moment().endOf('month')],
       'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     },
-    startDate: moment(),
+    startDate: moment().subtract(29, 'days'),
     endDate  : moment()
   });
 
@@ -273,7 +273,7 @@ $(function () {
     }
   });
 
-  setDurations(1);
+  setDurations(5);
 
   setInterval(function () {
     $.post('http://127.0.0.1:5002/handshaking', function(data){
