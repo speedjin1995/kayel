@@ -21,10 +21,10 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
         $limit = 7200;
     }
     else if($duration == 240){
-        $limit = 1800;
+        $limit = 14400;
     }
     else if($duration == 1440){
-        $limit = 7200;
+        $limit = 86400;
     }
 
 
