@@ -317,8 +317,8 @@ $(function () {
                 currentLength += parseFloat(obj.message[i].length);
               }
 
-              $addContents.find('#totalLength').html('Total Length: '+ totalLength);
-              $addContents.find('#currentLength').html('Current Length: ' + currentLength);
+              $addContents.find('#totalLength').html('Total Length: '+ parseFloat(totalLength).toFixed(2));
+              $addContents.find('#currentLength').html('Current Length: ' + parseFloat(currentLength).toFixed(2));
               $addContents.find('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
             }
           }
@@ -379,8 +379,8 @@ $(function () {
             currentLength += parseFloat(obj.message[i].length);
           }
 
-          $addContents.find('#totalLength').html('Total Length: '+ totalLength);
-          $addContents.find('#currentLength').html('Current Length: ' + currentLength);
+          $addContents.find('#totalLength').html('Total Length: '+ parseFloat(totalLength).toFixed(2));
+          $addContents.find('#currentLength').html('Current Length: ' + parseFloat(currentLength).toFixed(2));
           $addContents.find('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
         }
       }
@@ -484,8 +484,8 @@ $(function () {
               currentLength += parseFloat(obj.message[i].length);
             }
 
-            $addContents.find('#totalLength').html('Total Length: '+ totalLength);
-            $addContents.find('#currentLength').html('Current Length: ' + currentLength);
+            $addContents.find('#totalLength').html('Total Length: '+ parseFloat(totalLength).toFixed(2));
+            $addContents.find('#currentLength').html('Current Length: ' + parseFloat(currentLength).toFixed(2));
             $addContents.find('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
           }
         }
