@@ -115,7 +115,7 @@
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-        <div class="row" style="display: none;">
+        <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header border-0">
@@ -132,7 +132,7 @@
                     </div>
                   </div>
                   <div class="col-4"></div>
-                  <div class="col-5">
+                  <div class="col-5" style="display: none;">
                     <button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(1)">1 Min</button>
                   </div>
                   <!--div class="col-1">
@@ -154,38 +154,8 @@
           </div>
           <!-- /.col-md-6 -->
         </div>
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <p id="batchNo">Batch No: -</p>
-                  </div>
-                  <div class="col-lg-6">
-                    <p id="layers">Layer: -</p>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <p id="savedLength">Saved Length: -</p>
-                <p id="totalLength">Total Length: -</p>
-                <p id="currentLength">Current Length: -</p>
-                <p id="totalPcs">Total Pcs: 0 Pieces</p>
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th style="width: 50%">TimeStamp</th>
-                      <th style="width: 50%">Length</th>
-                    </tr>
-                  </thead>
-                  <tbody id="lengthReading"></tbody>
-                </table>
-              </div>
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col-md-6 -->
+        <div class="row" id="lengthDetails">
+          
         </div>
         <!-- /.row -->
       </div>
@@ -209,7 +179,39 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
+<div id="addContents" style="display: none;">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-lg-6">
+            <p id="batchNo">Batch No: -</p>
+          </div>
+          <div class="col-lg-6">
+            <p id="layers">Layer: -</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p id="savedLength">Saved Length: -</p>
+        <p id="totalLength">Total Length: -</p>
+        <p id="currentLength">Current Length: -</p>
+        <p id="totalPcs">Total Pcs: 0 Pieces</p>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th style="width: 50%">TimeStamp</th>
+              <th style="width: 50%">Length</th>
+            </tr>
+          </thead>
+          <tbody id="lengthReading"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- /.card -->
+  </div>
+  <!-- /.col-md-6 -->
+</div>
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
@@ -252,44 +254,84 @@ $(function () {
   }
 
   //Date range as a button
-  $('#reservation').daterangepicker({
-    ranges   : {
-      'Today'       : [moment(), moment()],
-      'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-      'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+  $('#reservation').daterangepicker(
+    {
+      ranges   : {
+        'Today'       : [moment(), moment()],
+        'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+        'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      },
+      startDate: moment(),
+      endDate  : moment()
     },
-    startDate: moment(),
-    endDate  : moment(),
-  });
+    function (start, end) {
+      var startFormatted = formatDate(start) + " 00:00:00";
+      var endFormatted = formatDate(end) + " 23:59:59";
 
-  /*myChart = new Chart("visitors-chart", {
-    type: "line",
-    options: {responsive: true},
-    data: {
-      labels: [],
-      datasets: [
-        {
-          type: 'line',
-          label: 'Total Length Produced',
-          data: [],
-          fill: false,
-          borderColor: '#007bff',
-          backgroundColor: '#007bff'
-        },
-        {
-          type: 'line',
-          label: 'Saved Length',
-          data: [],
-          fill: false,
-          borderColor: '#dc3545',
-          backgroundColor: '#dc3545'
+      $.post('php/lengthDatasets.php', {startDate: startFormatted, endDate: endFormatted}, function(data){
+        var obj = JSON.parse(data);
+
+        if(obj.status === 'success'){
+          toastr["success"]("Successfully get data", "Success:");
+
+          if(obj.message.length > 0){
+            var current = "";
+            $('#lengthDetails').html('');
+            var totalLength = 0;
+            var currentLength = 0;
+            var totalPcs = 0;
+            var previousLength = 0;
+            var $addContents = $("#addContents").clone();
+
+            for(var i=0; i<obj.message.length; i++){
+              if(current != obj.message[i].width_1){
+                if(i!=0){
+                  $("#lengthDetails").append($addContents.html());
+                }
+
+                $addContents = $("#addContents").clone();
+                totalLength = 0;
+                currentLength = 0;
+                totalPcs = 0;
+                previousLength = 0;
+
+                $addContents.find('#batchNo').html('Batch No: '+ obj.message[i].width_1);
+                $addContents.find('#layers').html('Layer: '+ obj.message[i].layer);
+                $addContents.find('#savedLength').html('Saved Length: ' + obj.message[i].length_saved);
+
+                current = obj.message[i].width_1;
+              }
+
+              if(parseFloat(obj.message[i].length) < previousLength){
+                $addContents.find('#lengthReading').append('<tr><td>'+obj.message[i-1].timestamp+'</td><td>'+obj.message[i].batch+'</td></tr>');
+                previousLength = parseFloat(obj.message[i].length);
+                totalLength += parseFloat(obj.message[i-1].length);
+                currentLength = parseFloat(obj.message[i].length);
+                totalPcs++;
+              }
+              else if(obj.message[i].length != previousLength){
+                previousLength = parseFloat(obj.message[i].length);
+                currentLength += parseFloat(obj.message[i].length);
+              }
+
+              $addContents.find('#totalLength').html('Total Length: '+ totalLength);
+              $addContents.find('#currentLength').html('Current Length: ' + currentLength);
+              $addContents.find('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
+            }
+          }
         }
-      ]
+        else if(obj.status === 'failed'){
+          toastr["error"](obj.message, "Failed:");
+        }
+        else{
+          toastr["error"]("Failed to get data", "Failed:");
+        }
+      });
     }
-  });*/
+  );
 
   $.post('php/lengthDatasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim()}, function(data){
     var obj = JSON.parse(data);
@@ -298,18 +340,35 @@ $(function () {
       toastr["success"]("Successfully get data", "Success:");
 
       if(obj.message.length > 0){
-        $('#batchNo').html('Batch No: '+ obj.message[0].width_1);
-        $('#layers').html('Layer: '+ obj.message[0].layer);
-        $('#savedLength').html('Saved Length: ' + obj.message[0].length_saved);
-        $('#lengthReading').html('');
+        var current = "";
+        $('#lengthDetails').html('');
         var totalLength = 0;
         var currentLength = 0;
         var totalPcs = 0;
         var previousLength = 0;
+        var $addContents = $("#addContents").clone();
 
         for(var i=0; i<obj.message.length; i++){
+          if(current != obj.message[i].width_1){
+            if(i!=0){
+              $("#lengthDetails").append($addContents.html());
+            }
+
+            $addContents = $("#addContents").clone();
+            totalLength = 0;
+            currentLength = 0;
+            totalPcs = 0;
+            previousLength = 0;
+
+            $addContents.find('#batchNo').html('Batch No: '+ obj.message[i].width_1);
+            $addContents.find('#layers').html('Layer: '+ obj.message[i].layer);
+            $addContents.find('#savedLength').html('Saved Length: ' + obj.message[i].length_saved);
+
+            current = obj.message[i].width_1;
+          }
+
           if(parseFloat(obj.message[i].length) < previousLength){
-            $('#lengthReading').append('<tr><td>'+obj.message[i-1].timestamp+'</td><td>'+obj.message[i].batch+'</td></tr>');
+            $addContents.find('#lengthReading').append('<tr><td>'+obj.message[i-1].timestamp+'</td><td>'+obj.message[i].batch+'</td></tr>');
             previousLength = parseFloat(obj.message[i].length);
             totalLength += parseFloat(obj.message[i-1].length);
             currentLength = parseFloat(obj.message[i].length);
@@ -320,9 +379,9 @@ $(function () {
             currentLength += parseFloat(obj.message[i].length);
           }
 
-          $('#totalLength').html('Total Length: '+ totalLength);
-          $('#currentLength').html('Current Length: ' + currentLength);
-          $('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
+          $addContents.find('#totalLength').html('Total Length: '+ totalLength);
+          $addContents.find('#currentLength').html('Current Length: ' + currentLength);
+          $addContents.find('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
         }
       }
     }
@@ -386,18 +445,35 @@ $(function () {
         toastr["success"]("Successfully get data", "Success:");
 
         if(obj.message.length > 0){
-          $('#batchNo').html('Batch No: '+ obj.message[0].width_1);
-          $('#layers').html('Layer: '+ obj.message[0].layer);
-          $('#savedLength').html('Saved Length: ' + obj.message[0].length_saved);
-          $('#lengthReading').html('');
+          var current = "";
+          $('#lengthDetails').html('');
           var totalLength = 0;
           var currentLength = 0;
           var totalPcs = 0;
           var previousLength = 0;
+          var $addContents = $("#addContents").clone();
 
           for(var i=0; i<obj.message.length; i++){
+            if(current != obj.message[i].width_1){
+              if(i!=0){
+                $("#lengthDetails").append($addContents.html());
+              }
+
+              $addContents = $("#addContents").clone();
+              totalLength = 0;
+              currentLength = 0;
+              totalPcs = 0;
+              previousLength = 0;
+
+              $addContents.find('#batchNo').html('Batch No: '+ obj.message[i].width_1);
+              $addContents.find('#layers').html('Layer: '+ obj.message[i].layer);
+              $addContents.find('#savedLength').html('Saved Length: ' + obj.message[i].length_saved);
+
+              current = obj.message[i].width_1;
+            }
+
             if(parseFloat(obj.message[i].length) < previousLength){
-              $('#lengthReading').append('<tr><td>'+obj.message[i].timestamp+'</td><td>'+obj.message[i].batch+'</td></tr>');
+              $addContents.find('#lengthReading').append('<tr><td>'+obj.message[i-1].timestamp+'</td><td>'+obj.message[i].batch+'</td></tr>');
               previousLength = parseFloat(obj.message[i].length);
               totalLength += parseFloat(obj.message[i-1].length);
               currentLength = parseFloat(obj.message[i].length);
@@ -408,12 +484,11 @@ $(function () {
               currentLength += parseFloat(obj.message[i].length);
             }
 
-            $('#totalLength').html('Total Length: '+ totalLength);
-            $('#currentLength').html('Current Length: ' + currentLength);
-            $('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
+            $addContents.find('#totalLength').html('Total Length: '+ totalLength);
+            $addContents.find('#currentLength').html('Current Length: ' + currentLength);
+            $addContents.find('#totalPcs').html('Total Pcs: '+totalPcs+' Pieces');
           }
         }
-        
       }
       else if(obj.status === 'failed'){
         toastr["error"](obj.message, "Failed:");
@@ -443,6 +518,21 @@ function removeData() {
   }
 
   myChart.update();
+}
+
+function formatDate(date) {
+  var d = new Date(date),
+  month = '' + (d.getMonth() + 1),
+  day = '' + d.getDate(),
+  year = d.getFullYear();
+
+  if (month.length < 2) 
+    month = '0' + month;
+
+  if (day.length < 2) 
+    day = '0' + day;
+
+  return [year, month, day].join('-');
 }
 </script>
 </body>
