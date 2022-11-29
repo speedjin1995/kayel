@@ -9,22 +9,22 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     $toDate = new DateTime($endDate);
     $end= date_format($toDate,"Y-m-d 23:59:59");
     $duration = filter_input(INPUT_POST, 'duration', FILTER_SANITIZE_STRING);
-    $limit = 30;
+    $limit = 50;
 
     if($duration == 5){
-        $limit = 300;
+        $limit = 500;
     }
     else if($duration == 30){
-        $limit = 1800;
+        $limit = 3000;
     }
     else if($duration == 60){
-        $limit = 7200;
+        $limit = 6000;
     }
     else if($duration == 240){
-        $limit = 14400;
+        $limit = 24000;
     }
     else if($duration == 1440){
-        $limit = 86400;
+        $limit = 1440000;
     }
 
 

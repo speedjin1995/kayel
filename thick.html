@@ -138,7 +138,7 @@
                     </p>
                   </div>
                   <div class="col-1">
-                    <button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(5)">5 Min</button>
+                    <!--button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(5)">5 Min</button-->
                   </div>
                   <div class="col-1">
                     <button type="button" class="btn btn-block bg-gradient-warning btn-sm" onclick="setDurations(30)">30 Mins</button>
@@ -155,8 +155,10 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="position-relative mb-4">
-                  <canvas id="visitors-chart" height="100vh"></canvas>
+                <div style="width: 100%; overflow-x: auto; overflow-y: hidden">
+                  <div style="width: 3000px; height: 60vh">
+                    <canvas id="visitors-chart" height="60vh" width="0"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
@@ -206,7 +208,7 @@
 <script src="plugins/toastr/toastr.min.js"></script>
 
 <script>
-var duration = 5;
+var duration = 30;
 var myChart;
 
 $(function () {
@@ -278,7 +280,7 @@ $(function () {
     }
   });
 
-  setDurations(5);
+  setDurations(30);
 
   setInterval(function () {
     $.post('http://127.0.0.1:5002/handshaking', function(data){
