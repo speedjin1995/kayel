@@ -3,7 +3,7 @@ require_once 'db_connect.php';
 
 if(isset($_POST['aircond_1'], $_POST['aircond_2'], $_POST['chamber'], $_POST['hot_water_1'], $_POST['hot_water_2'], $_POST['hot_water_3'],
 $_POST['length'], $_POST['rpm'], $_POST['batch'], $_POST['length_saved'], $_POST['sensor_1'], $_POST['sensor_2'], $_POST['sensor_3'],
-$_POST['layer'], $_POST['width_1'], $_POST['width_2'])){
+$_POST['layer'], $_POST['width_1'], $_POST['width_2'], $_POST['lot_no'])){
     $aircond_1 = filter_input(INPUT_POST, 'aircond_1', FILTER_SANITIZE_STRING);
     $aircond_2 = filter_input(INPUT_POST, 'aircond_2', FILTER_SANITIZE_STRING);
     $chamber = filter_input(INPUT_POST, 'chamber', FILTER_SANITIZE_STRING);
@@ -20,9 +20,10 @@ $_POST['layer'], $_POST['width_1'], $_POST['width_2'])){
     $layer = filter_input(INPUT_POST, 'layer', FILTER_SANITIZE_STRING);
     $width_1 = filter_input(INPUT_POST, 'width_1', FILTER_SANITIZE_STRING);
     $width_2 = filter_input(INPUT_POST, 'width_2', FILTER_SANITIZE_STRING);
+    $lot_no = filter_input(INPUT_POST, 'lot_no', FILTER_SANITIZE_STRING);
 
-    if ($insert_stmt = $db->prepare("INSERT INTO reading (aircond_1, aircond_2, chamber, hot_water_1, hot_water_2, hot_water_3, length, rpm, batch, length_saved, sensor_1, sensor_2, sensor_3, layer, width_1, width_2) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ? ,?, ?, ?)")) {
-        $insert_stmt->bind_param('ssssssssssssssss', $aircond_1, $aircond_2, $chamber, $hot_water_1, $hot_water_2, $hot_water_3, $length, $rpm, $batch, $length_saved, $sensor_1, $sensor_2, $sensor_3, $layer, $width_1, $width_2);
+    if ($insert_stmt = $db->prepare("INSERT INTO reading (lot_no, aircond_1, aircond_2, chamber, hot_water_1, hot_water_2, hot_water_3, length, rpm, batch, length_saved, sensor_1, sensor_2, sensor_3, layer, width_1, width_2) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ? ,?, ?, ?)")) {
+        $insert_stmt->bind_param('sssssssssssssssss', $lot_no, $aircond_1, $aircond_2, $chamber, $hot_water_1, $hot_water_2, $hot_water_3, $length, $rpm, $batch, $length_saved, $sensor_1, $sensor_2, $sensor_3, $layer, $width_1, $width_2);
         
         // Execute the prepared query.
         if (! $insert_stmt->execute()) {

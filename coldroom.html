@@ -19,6 +19,17 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+  <style>
+    #barcodeScan {
+      background-color: #ffffff;
+      color: #ffffff;
+      border: none;
+    }
+
+    #barcodeScan:focus {
+      outline: none;
+    }
+  </style>
 </head>
 <!--
 `body` tag options:
@@ -131,13 +142,18 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-3">
                     <p id="batchNo">
+                      Current Lot No.: - <br>
                       Current Batch: - <br>
                       Layer: -
                     </p>
                   </div>
                   <div class="col-1">
+                    <button type="button" class="btn btn-block bg-gradient-info btn-sm" id="scanReceives">Scan</button>
+                  </div>
+                  <div class="col-1">
+                    <input type="text" id="barcodeScan">
                     <!--button type="button" class="btn btn-block bg-gradient-success btn-sm" onclick="setDurations(5)">5 Min</button-->
                   </div>
                   <div class="col-1">
@@ -210,6 +226,7 @@
 <script>
 var duration = 30;
 var myChart;
+var currentLot = '-';
 
 $(function () {
   toastr.options = {
@@ -249,6 +266,54 @@ $(function () {
     }
   );
 
+  $.post('php/latestBatch.php', function(data){
+    var obj = JSON.parse(data);
+
+    if(obj.status === 'success'){
+      toastr["success"]("Successfully get lot", "Success:");
+      currentLot = obj.message.lot_no;
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Failed to get data", "Failed:");
+    }
+  });
+
+  $('#scanReceives').on('click', function(){
+    $('#barcodeScan').trigger('focus');
+  });
+
+  $('#barcodeScan').on('change', function(){
+    var url = $(this).val();
+    $(this).val('');
+    currentLot = url;
+
+    $.post('php/datasets.php', {startDate: $('#reservation').val().split("-")[0].trim(), endDate: $('#reservation').val().split("-")[1].trim(), duration: duration}, function(data){
+      var obj = JSON.parse(data);
+
+      if(obj.status === 'success'){
+        toastr["success"]("Successfully get data", "Success:");
+
+        if(obj.message.length > 0){
+          removeData();
+          $('#batchNo').html('Current Lot No.: ' + currentLot + '<br>Current Batch: '+ obj.message[0].width_1 +' <br>Layer: ' + obj.message[0].layer);
+
+          for(var i=0; i<obj.message.length; i++){
+            addData(obj.message[i].timestamp, obj.message[i].hot_water_1, obj.message[i].hot_water_2, obj.message[i].hot_water_3);
+          }
+        }
+      }
+      else if(obj.status === 'failed'){
+        toastr["error"](obj.message, "Failed:");
+      }
+      else{
+        toastr["error"]("Failed to get data", "Failed:");
+      }
+    });
+  });
+
   myChart = new Chart("visitors-chart", {
     type: "line",
     options: {responsive: true},
@@ -282,8 +347,12 @@ $(function () {
 
   setDurations(30);
 
+  $('#barcodeScan').focus();
+
   setInterval(function () {
     $.post('http://127.0.0.1:5002/handshaking', function(data){
+      $('#barcodeScan').focus();
+
       if(data != null && data != "Error"){
         var decoded = JSON.parse(data);
 
@@ -305,7 +374,8 @@ $(function () {
               sensor_3: decoded[12], 
               layer: decoded[13], 
               width_1: decoded[14], 
-              width_2: decoded[15]
+              width_2: decoded[15],
+              lot_no: currentLot
             }, 
             function(data){
               var obj = JSON.parse(data);
@@ -342,7 +412,7 @@ function setDurations(id){
 
       if(obj.message.length > 0){
         removeData();
-        $('#batchNo').html('Current Batch: '+ obj.message[0].width_1 +' <br>Layer: ' + obj.message[0].layer);
+        $('#batchNo').html('Current Lot No.: ' + obj.message[obj.message.length - 1].lot_no + '<br>Current Batch: '+ obj.message[0].width_1 +' <br>Layer: ' + obj.message[0].layer);
 
         for(var i=0; i<obj.message.length; i++){
           addData(obj.message[i].timestamp, obj.message[i].aircond_1, obj.message[i].aircond_2, obj.message[i].chamber);

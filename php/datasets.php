@@ -41,6 +41,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
 
                 $data[] = array( 
                     "timestamp"=>$start,
+                    "lot_no"=>$row['lot_no'],
                     "aircond_1"=>$row['aircond_1'],
                     "aircond_2"=>$row['aircond_2'],
                     "chamber"=>$row['chamber'],
@@ -71,6 +72,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
 
                 $data[] = array( 
                     "timestamp"=>$start,
+                    "lot_no"=>$row['lot_no'],
                     "aircond_1"=>$row['aircond_1'],
                     "aircond_2"=>$row['aircond_2'],
                     "chamber"=>$row['chamber'],
@@ -101,6 +103,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
 
                 $data[] = array( 
                     "timestamp"=>$start,
+                    "lot_no"=>$row['lot_no'],
                     "aircond_1"=>$row['aircond_1'],
                     "aircond_2"=>$row['aircond_2'],
                     "chamber"=>$row['chamber'],
@@ -131,6 +134,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
 
                 $data[] = array( 
                     "timestamp"=>$start,
+                    "lot_no"=>$row['lot_no'],
                     "aircond_1"=>$row['aircond_1'],
                     "aircond_2"=>$row['aircond_2'],
                     "chamber"=>$row['chamber'],
@@ -161,6 +165,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
 
                 $data[] = array( 
                     "timestamp"=>$start,
+                    "lot_no"=>$row['lot_no'],
                     "aircond_1"=>$row['aircond_1'],
                     "aircond_2"=>$row['aircond_2'],
                     "chamber"=>$row['chamber'],
