@@ -232,6 +232,13 @@ var myChart;
 var currentLot = '-';
 
 $(function () {
+  var newWindow = window.open("rtsp://kayel1:kayel1234@172.31.98.164/stream1", "", "width=300, height=300");
+  
+  setTimeout(function(){
+    newWindow.focus();
+    newWindow.close();
+  }, 1000);
+
   toastr.options = {
     "closeButton": false,
     "debug": false,
