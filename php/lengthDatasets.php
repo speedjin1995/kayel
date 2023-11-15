@@ -15,7 +15,7 @@ if(isset($_POST['startDate'], $_POST['endDate'])){
     $count = 0;
 
     while($row = mysqli_fetch_assoc($empRecords)) {
-        $start = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
+        $start = date("Y-m-d H:i", strtotime($row['timestamp']));
 
         $data[] = array( 
             "timestamp"=>$start,

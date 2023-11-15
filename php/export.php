@@ -58,7 +58,7 @@ $query = $db->query("SELECT * FROM reading WHERE ".$searchQuery);
 if($query->num_rows > 0){ 
     // Output each row of the data 
     while($row = $query->fetch_assoc()){ 
-        $parsedDate = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
+        $parsedDate = date("Y-m-d H:i", strtotime($row['timestamp']));
         $lineData = array($parsedDate, $row['aircond_1'], $row['aircond_2'], $row['chamber'], $row['hot_water_1'], $row['hot_water_2'],
         $row['hot_water_3'], $row['length'], $row['length_saved'], $row['rpm'], $row['batch'], $row['layer'], $row['sensor_1'], $row['sensor_2'], $row['sensor_3']);       
 

@@ -36,8 +36,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     if($duration == 5){
         while($row = mysqli_fetch_assoc($empRecords)) {
             if($count % 10 == 0){
-                $start = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
-                //$start = date_format($fromDate, "Y-m-d H:i");
+                $start = date("Y-m-d H:i", strtotime($row['timestamp']));
 
                 $data[] = array( 
                     "timestamp"=>$start,
@@ -67,8 +66,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     else if($duration == 30){
         while($row = mysqli_fetch_assoc($empRecords)) {
             if($count % 60 == 0){
-                $start = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
-                //$start = date_format($fromDate, "Y-m-d H:i");
+                $start = date("Y-m-d H:i", strtotime($row['timestamp']));
 
                 $data[] = array( 
                     "timestamp"=>$start,
@@ -98,8 +96,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     else if($duration == 60){
         while($row = mysqli_fetch_assoc($empRecords)) {
             if($count % 120 == 0){
-                $start = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
-                //$start = date_format($fromDate, "Y-m-d H:i");
+                $start = date("Y-m-d H:i", strtotime($row['timestamp']));
 
                 $data[] = array( 
                     "timestamp"=>$start,
@@ -129,8 +126,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     else if($duration == 240){
         while($row = mysqli_fetch_assoc($empRecords)) {
             if($count % 480 == 0){
-                $start = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
-                //$start = date_format($fromDate, "Y-m-d H:i");
+                $start = date("Y-m-d H:i", strtotime($row['timestamp']));
 
                 $data[] = array( 
                     "timestamp"=>$start,
@@ -160,8 +156,7 @@ if(isset($_POST['startDate'], $_POST['endDate'], $_POST['duration'])){
     else if($duration == 1440){
         while($row = mysqli_fetch_assoc($empRecords)) {
             if($count % 2880 == 0){
-                $start = date("Y-m-d H:i", strtotime('+8 hours',strtotime($row['timestamp'])));
-                //$start = date_format($fromDate, "Y-m-d H:i");
+                $start = date("Y-m-d H:i", strtotime($row['timestamp']));
 
                 $data[] = array( 
                     "timestamp"=>$start,
